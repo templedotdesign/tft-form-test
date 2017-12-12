@@ -1,0 +1,13 @@
+.TravelerInfo {
+  width: 50%;
+  margin: 10px auto;
+}
+
+@media(max-width:750px) {
+  .TravelerInfo {
+    width: 100%;
+  }
+  .TravelerInfo select, .TravelerInfo input {
+    background-color: #ccc;
+  }
+}

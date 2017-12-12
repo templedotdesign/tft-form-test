@@ -1,0 +1,30 @@
+.TestForm {
+  width: 60%;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 30px auto;
+}
+
+.Border {
+  background-color: #ccc;
+  height: 50px;
+  border-radius: 5px 5px 0 0;
+}
+
+.TestForm input, .TestForm select, .TestForm h1, .TestForm h5, .TestForm p, .TestForm label {
+  margin: 10px;
+}
+
+.TestForm hr {
+  margin: 5px 0;
+}
+
+.Wide {
+  width: calc(100% - 20px);
+}
+
+.TestForm button {
+  display: block;
+  margin: 30px auto;
+  padding: 10px;
+}

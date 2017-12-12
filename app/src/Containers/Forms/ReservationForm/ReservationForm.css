@@ -1,0 +1,44 @@
+.ReservationForm {
+  width: 60%;
+  margin: 50px auto;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.Banner {
+  background-color: #ccc;
+  text-align: center;
+  border-radius: 5px 5px 0 0;
+  padding: 10px;
+}
+
+.Selects {
+  width: 50%;
+  margin: 0 auto;
+}
+
+
+
+.ReservationForm button {
+  display: block;
+  padding: 20px;
+  margin: 30px auto;
+  font-family: inherit;
+  font-size: 1.3rem;
+  border-radius: 5px;
+}
+
+@media(max-width:750px) {
+  .ReservationForm {
+    width: 100%;
+    margin: 0;
+  }
+
+  .Selects {
+    width: 100%;
+  }
+
+  .ReservationForm select {
+    background-color: #ccc;
+  }
+}
