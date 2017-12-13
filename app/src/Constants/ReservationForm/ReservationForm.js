@@ -26,9 +26,9 @@ export const GENDER_TYPES = [
 
 export const BEDDING_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'King', name: 'King Bed(s)' },
-  { value: 'Queen', name: 'Queen Bed(s)' },
-  { value: 'Double', name: 'Double Bed(s)' }
+  { value: 'king', name: 'King Bed(s)' },
+  { value: 'queen', name: 'Queen Bed(s)' },
+  { value: 'double', name: 'Double Bed(s)' }
 ];
 
 export const VACTION_TYPES = [

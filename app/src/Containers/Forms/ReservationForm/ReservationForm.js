@@ -13,9 +13,23 @@ import classes from './ReservationForm.css';
 class ReservationForm extends Component {
   state = {
     agents: [],
+    primaryAgent: null,
+    resort: null,
+    departureDate: null,
+    returnDate: null,
+    roomType: null,
+    bedding: null,
+    vacationType: null,
+    airfare: null,
+    military: null,
+    insurance: null,
+    specialRequest: null,
+    otherQuestion: null,
+    departureLocation: null, 
+    destinationLocation: null,
+
     useSameAddress: null,
     payOtherAmount: null,    
-    primaryAgent: null,
     travelType: null,
     paymentType: null,
     lodging: null,
@@ -41,8 +55,17 @@ class ReservationForm extends Component {
     this.setState({...this.state, [event.target.name]: event.target.value});
   };
 
-  onAgentChanged = (event) => {
-    this.setState({...this.state, primaryAgent: event.target.value});
+  handleChangeMultiSelect = (event) => {
+    let options = event.target.options;
+    let values = [];
+
+    for(let i = 0; i < options.length; i++) {
+      if(options[i].selected) {
+        values.push(options[i].value);
+      }
+    }
+
+    this.setState({...this.state, [event.target.name]: values});
   };
 
   onTravelTypeChanged = (event) => {
@@ -76,8 +99,6 @@ class ReservationForm extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-    // console.log(this.state.travelType);
-    // console.log(this.state.numberOfTravelers);
   };
 
   render() {
@@ -136,15 +157,15 @@ class ReservationForm extends Component {
     if(this.state.lodging === 'lodging') {
       lodgingInfo = (
         <div>
-          <Field label="Perferred Resort:" type="text"/>
-          <SelectField label="Perferred Room Type:" options={Constants.ROOM_TYPES} multiple/>
+          <Field label="Perferred Resort:" type="text" name="resort" changed={this.handleChange}/>
+          <SelectField label="Perferred Room Type:" options={Constants.ROOM_TYPES} multiple name="roomType" changed={this.handleChangeMultiSelect}/>
         </div>
       );
     } else if(this.state.lodging === 'cruise') {
       lodgingInfo = (
         <div>
-          <Field label="Perferred Cruise:" type="text"/>
-          <SelectField label="Perferred Cabin Type:" options={Constants.CABIN_TYPES}/>
+          <Field label="Perferred Cruise:" type="text" name="resort" changed={this.handleChange}/>
+          <SelectField label="Perferred Cabin Type:" options={Constants.CABIN_TYPES} name="roomType" changed={this.handleChange}/>
         </div>
       );
     }
@@ -198,14 +219,15 @@ class ReservationForm extends Component {
           <div className={classes.Skinny}>
             <SelectField label="Lodging or Cruise?" options={Constants.LODGING_CRUISE} changed={this.onLodgingChanged}/>
             {lodgingInfo}
-            <Field label="Departure Date:" type="date"/>
-            <Field label="Return Date:" type="date"/>
-            <SelectField label="Bedding Type:" options={Constants.BEDDING_TYPES}/>
-            <Field label="Departure Airport:" type="text"/>
-            <SelectField label="Vacation Type:" options={Constants.VACTION_TYPES}/>
-            <SelectField label="Do You Need Airfare?" options={Constants.YES_NO_AIRFARE}/>
-            <SelectField label="Active Military / Veteran:" options={Constants.YES_NO}/>
-            <SelectField label="Do You Want Travel Insurance?" options={Constants.YES_NO}/>
+            <Field label="Departure Date:" type="date" name="departureDate" changed={this.handleChange}/>
+            <Field label="Return Date:" type="date" name="returnDate" changed={this.handleChange}/>
+            <SelectField label="Bedding Type:" options={Constants.BEDDING_TYPES} name="bedding" changed={this.handleChange}/>
+            <Field label="Departure Airport:" type="text" name="departureLocation" changed={this.handleChange}/>
+            <Field label="Destination Airport:" type="text" name="destinationLocation" changed={this.handleChange}/>
+            <SelectField label="Vacation Type:" options={Constants.VACTION_TYPES} name="vacationType" changed={this.handleChange}/>
+            <SelectField label="Do You Need Airfare?" options={Constants.YES_NO_AIRFARE} name="airfare" changed={this.handleChange}/>
+            <SelectField label="Active Military / Veteran:" options={Constants.YES_NO} name="military" changed={this.handleChange}/>
+            <SelectField label="Do You Want Travel Insurance?" options={Constants.YES_NO} name="insurance" changed={this.handleChange}/>
             <div className={classes.Disclaimer}>
             <p>We Cannot Add Cancel For Any Reason Insurance After Deposit, However We Can Add Other Traditional Insurance At A Later Date.</p>
             </div>
@@ -226,8 +248,8 @@ class ReservationForm extends Component {
           </div> 
 
           <div className={classes.Skinny}>
-            <FieldArea label="Special Requests:" cols="30" rows="10"/>
-            <FieldArea label="Other Questions / Comments:" cols="30" rows="10"/>
+            <FieldArea label="Special Requests:" cols="30" rows="10" name="specialRequest" changed={this.handleChange}/>
+            <FieldArea label="Other Questions / Comments:" cols="30" rows="10" name="otherQuestion" changed={this.handleChange}/>
             <Field label="Electronic Signature:" type="text"/>
           </div>
           <div style={{margin: '10px'}}>
