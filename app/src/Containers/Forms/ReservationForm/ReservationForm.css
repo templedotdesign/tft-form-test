@@ -1,5 +1,5 @@
 .ReservationForm {
-  width: 60%;
+  width: 80%;
   margin: 50px auto;
   border: 1px solid black;
   border-radius: 5px;
@@ -8,15 +8,26 @@
 .Banner {
   background-color: #ccc;
   text-align: center;
-  border-radius: 5px 5px 0 0;
   padding: 10px;
 }
 
-.Selects {
+.Skinny {
   width: 50%;
   margin: 0 auto;
 }
 
+.Disclaimer {
+  text-align: center;
+  font-weight: bold;
+  color: red;
+  font-size: 1.2rem;
+}
+
+.Row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 
 .ReservationForm button {
@@ -28,17 +39,21 @@
   border-radius: 5px;
 }
 
+.ReservationForm button:hover {
+  background-color: #ccc;
+}
+
 @media(max-width:750px) {
   .ReservationForm {
     width: 100%;
     margin: 0;
   }
 
-  .Selects {
+  .Skinny {
     width: 100%;
   }
 
-  .ReservationForm select {
+  .ReservationForm select, .ReservationForm input, .ReservationForm textarea {
     background-color: #ccc;
   }
 }
