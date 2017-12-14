@@ -12,33 +12,14 @@ import classes from './ReservationForm.css';
 
 class ReservationForm extends Component {
   state = {
-    agents: [],
-    primaryAgent: null,
-    resort: null,
-    departureDate: null,
-    returnDate: null,
-    roomType: null,
-    bedding: null,
-    vacationType: null,
-    airfare: null,
-    military: null,
-    insurance: null,
-    specialRequest: null,
-    otherQuestion: null,
-    departureLocation: null, 
-    destinationLocation: null,
-
-    useSameAddress: null,
-    payOtherAmount: null,    
-    travelType: null,
-    paymentType: null,
-    lodging: null,
-    numberOfTravelers: 0
+    agents: []
   }
 
   componentDidMount() {
     let agentsArray = [{value: 'null', name: 'Select'}];
-    axios.get('https://www.vacationcrm.com/travelmvc/api/Service/GetAgents?ApiKey=9A9535E5-B636-4C3B-BAA7-56C87E2FD076')
+    const getAgentsURL = `https://www.vacationcrm.com/travelmvc/api/Service/GetAgents?ApiKey=${Constants.API_KEY}`;
+    const getRequestURL = `https://www.vacationcrm.com/travelmvc/api/Service/GetRequest?ApiKey=${Constants.API_KEY}`;
+    axios.get(getAgentsURL)
     .then(res => {
       res.data.map(agent => {
         agentsArray.push({value: agent.Code, name: agent.FullName});
@@ -49,73 +30,147 @@ class ReservationForm extends Component {
     .catch(err => {
       console.log(err);
     });
+
+    axios.get(getRequestURL)
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 
   handleChange = (event) => {
-    this.setState({...this.state, [event.target.name]: event.target.value});
-  };
-
-  handleChangeMultiSelect = (event) => {
-    let options = event.target.options;
-    let values = [];
-
-    for(let i = 0; i < options.length; i++) {
-      if(options[i].selected) {
-        values.push(options[i].value);
-      }
-    }
-
-    this.setState({...this.state, [event.target.name]: values});
-  };
-
-  onTravelTypeChanged = (event) => {
-    this.setState({...this.state, travelType: event.target.value});
-  };
-
-  onTravelerCountChanged = (event) => {
-    this.setState({...this.state, numberOfTravelers: event.target.value});
-  };
-
-  onPaymentTypeChanged = (event) => {
-    this.setState({...this.state, paymentType: event.target.value});
-  };
-
-  onBillingAddressChanged = (event) => {
-    if(event.target.value === 'yes') {
-      this.setState({...this.state, useSameAddress: true});
-    } else if(event.target.value === 'no') {
-      this.setState({...this.state, useSameAddress: false});
-    }
-  };
-
-  onPaymentAmountChanged = (event) => {
-    this.setState({...this.state, payOtherAmount: event.target.value});
-  };
-
-  onLodgingChanged = (event) => {
-    this.setState({...this.state, lodging: event.target.value});
+    this.setState({...this.state, [event.target.name]: event.target.value || null});
   };
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    const passengersArray = this.createPassengers();
+    const paymentsArray = [];
+    const formattedDepartureDate = this.formatDate(this.state.departureDate);
+    const formattedReturnDate = this.formatDate(this.state.returnDate);
+    const reservation = {
+      Airfare: this.state.airfare || null,
+      ApiKey: Constants.API_KEY,
+      Bedding: this.state.bedding || null,
+      CustomField1: null,
+      CustomField2: null,
+      CustomField3: null,
+      CustomField4: null,
+      CustomField5: null,
+      CustomField6: null,
+      CustomField7: null,
+      CustomField8: null,
+      CustomField9: null,
+      CustomField10: null, 
+      DepartureDate: formattedDepartureDate,
+      DepartureLocation: this.state.departureLocation || null,
+      DestinationLocation: this.state.destinationLocation || null,
+      Insurance: this.state.insurance || null,
+      Military: this.state.military || null,
+      OtherQuestion: this.state.otherQuestion || null,
+      Passengers: passengersArray,
+      Payments: paymentsArray,
+      PrimaryAgent: this.state.primaryAgent || null,
+      ReminderText: null,
+      Resort: this.state.resort || null,
+      ReturnDate: formattedReturnDate,
+      RoomType: this.state.roomType || null,
+      SpecialRequest: this.state.specialRequest || null,
+      VacationType: this.state.vacationType || null,
+      pdf_id: null,
+      udf_reg1: null,
+      udf_reg2: null,
+      udf_reg3: null,
+      udf_reg4: null,
+      udf_reg5: null
+    };
+    console.log(reservation);
+  };
+
+  createPassengers = () => {
+    let passengers = [];
+    for(let i = 1; i <= this.state.numberOfTravelers; i++) {
+      let passenger = {};
+      const fNameProp = `passenger${i}FirstName`;
+      const mNameProp = `passenger${i}MiddleName`;
+      const lNameProp = `passenger${i}LastName`;
+      const passNumProp = `passenger${i}PassNum`;
+      const passIssuerProp =`passenger${i}PassIssuer`;
+      const passExpProp = `passenger${i}PassExp`;
+      const dobProp = `passenger${i}DOB`;
+      const genderProp = `passenger${i}Gender`;
+      const suffixProp = `passenger${i}Suffix`;
+      const formattedDOB = this.formatDate(this.state[dobProp]);
+      passenger = {...passenger, FirstName: this.state[fNameProp]};
+      passenger = {...passenger, MiddleName: this.state[mNameProp]};
+      passenger = {...passenger, LastName: this.state[lNameProp]};
+      passenger = {...passenger, PassportNum: this.state[passNumProp] || null};
+      passenger = {...passenger, PassportState: this.state[passIssuerProp] || null};
+      passenger = {...passenger, PassportExp: this.state[passExpProp] || null};
+      passenger = {...passenger, DOB: formattedDOB};
+      passenger = {...passenger, Gender: this.state[genderProp]};
+      passenger = {...passenger, Suffix: this.state[suffixProp] || null};
+      passenger = {...passenger, DepartureAirport: this.state.departureLocation || null};
+      if(i === 1) {
+        passenger = {...passenger, PrimaryPass: 'Y'};
+        passenger = {...passenger, Country: this.state.contactCountry};
+        passenger = {...passenger, Street: this.state.contactStreet};
+        passenger = {...passenger, City: this.state.contactCity};
+        passenger = {...passenger, State: this.state.contactState};
+        passenger = {...passenger, Zip: this.state.contactZip};
+        passenger = {...passenger, Email: this.state.contactEmail};
+        passenger = {...passenger, Email2: this.state.contactEmail2 || null};
+        passenger = {...passenger, Phone1: this.state.contactPhone};
+        passenger = {...passenger, Phone2: this.state.contactPhone2 || null};
+      } else {
+        passenger = {...passenger, PrimaryPass: 'N'};
+        passenger = {...passenger, Country: null};
+        passenger = {...passenger, Street: null};
+        passenger = {...passenger, City: null};
+        passenger = {...passenger, State: null};
+        passenger = {...passenger, Zip: null};
+        passenger = {...passenger, Email: null};
+        passenger = {...passenger, Email2: null};
+        passenger = {...passenger, Phone1: null};
+        passenger = {...passenger, Phone2: null};
+      }
+      passenger = {...passenger, Anniversary: null};
+      passenger = {...passenger, FreqAirline: null};
+      passenger = {...passenger, FreqNumber: null};
+      passenger = {...passenger, ReferredBy: null};
+      passenger = {...passenger, SeatingPref: null};
+      passenger = {...passenger, TravelerNumber: null};
+      passengers.push(passenger);
+    }
+    return passengers;
+  };
+
+  formatDate = (dateString) => {
+    const dateArray = dateString.split('-');
+    const formattedArray = [];
+    formattedArray.push(dateArray[1]);
+    formattedArray.push(dateArray[2]);
+    formattedArray.push(dateArray[0]);
+    return formattedArray.join('/');
   };
 
   render() {
     let disclaimer = null;
-    if(this.state.travelType === 'domestic') {
+    if(this.state.travelType === 'Domestic') {
       disclaimer = (<p>Passenger name must match name on State ID EXACTLY.  Passengers under 16 years of age may substitute their birth certificate for a State ID.</p>);
-    } else if(this.state.travelType === 'international') {
+    } else if(this.state.travelType === 'International') {
       disclaimer = (<p>Passenger name must match name on Passport EXACTLY.</p>);
     }
 
     let travelers = [];
     for(let i = 1; i <= this.state.numberOfTravelers; i++) {
-      travelers.push(<TravelerInfo key={i} number={i} traveltype={this.state.travelType}/>)
+      travelers.push(<TravelerInfo key={i} number={i} traveltype={this.state.travelType} changed={this.handleChange}/>)
     }
     
     let billingInfo = null;
-    if(this.state.useSameAddress === false) {
+    if(this.state.useSameAddress === 'No') {
       billingInfo = (
         <div>
           <Field label="Billing Country:" type="text"/>
@@ -129,14 +184,14 @@ class ReservationForm extends Component {
     }
 
     let payOtherAmount = null;
-    if(this.state.payOtherAmount === 'other') {
+    if(this.state.paymentAmount === 'Other') {
       payOtherAmount = (
         <Field label="Amount:" type="text"/>
       );
     }
 
     let paymentInfo = null;
-    if(this.state.paymentType !== null) {
+    if(this.state.paymentType) {
       paymentInfo = (
         <div>
           <Field label="Credit Card Number:" type="text"/>
@@ -144,24 +199,24 @@ class ReservationForm extends Component {
           <Field label="Expiration Year:" type="text" placeholder="YYYY"/>
           <Field label="CCV #:" type="text"/>
           <Field label="Name On The Card:" type="text"/>
-          <SelectField label="Billing Address Same As Contact Address?" options={Constants.YES_NO} changed={this.onBillingAddressChanged}/>
+          <SelectField label="Billing Address Same As Contact Address?" options={Constants.YES_NO} name="useSameAddress" changed={this.handleChange}/>
           {billingInfo}
           <Field label="Payment Description:" type="text"/>
-          <SelectField label="Pay In Full Or Deposit?" options={Constants.PAYMENT_AMOUNTS} changed={this.onPaymentAmountChanged}/>
+          <SelectField label="Pay In Full Or Deposit?" options={Constants.PAYMENT_AMOUNTS} name="paymentAmount" changed={this.handleChange}/>
           {payOtherAmount}
         </div>
       );
     }
 
     let lodgingInfo = null;
-    if(this.state.lodging === 'lodging') {
+    if(this.state.lodging === 'Lodging') {
       lodgingInfo = (
         <div>
           <Field label="Perferred Resort:" type="text" name="resort" changed={this.handleChange}/>
-          <SelectField label="Perferred Room Type:" options={Constants.ROOM_TYPES} multiple name="roomType" changed={this.handleChangeMultiSelect}/>
+          <SelectField label="Perferred Room Type:" options={Constants.ROOM_TYPES} name="roomType" changed={this.handleChange}/>
         </div>
       );
-    } else if(this.state.lodging === 'cruise') {
+    } else if(this.state.lodging === 'Cruise') {
       lodgingInfo = (
         <div>
           <Field label="Perferred Cruise:" type="text" name="resort" changed={this.handleChange}/>
@@ -173,51 +228,44 @@ class ReservationForm extends Component {
     return (
       <div className={classes.ReservationForm}>
         <form>
-
           <div className={classes.Banner} style={{borderTopLeftRadius: '5px', borderTopRightRadius: '5px'}}>
             <h1>Step 1: Passenger Information</h1>
           </div>
-
           <div className={classes.Skinny}>
             <p style={{textAlign: 'center'}}>Select One From Each List</p>
             <SelectField label="Who Is Your Travel Agent?" name="primaryAgent" options={this.state.agents} changed={this.handleChange}/>
-            <SelectField label="Total Number Of Passengers:" options={Constants.TRAVELER_COUNT} changed={this.onTravelerCountChanged}/>            
-            <SelectField label="Domestic Or International Travel?" options={Constants.TRAVEL_TYPES} changed={this.onTravelTypeChanged}/>
+            <SelectField label="Total Number Of Passengers:" options={Constants.TRAVELER_COUNT} name="numberOfTravelers" changed={this.handleChange}/>            
+            <SelectField label="Domestic Or International Travel?" options={Constants.TRAVEL_TYPES} name="travelType" changed={this.handleChange}/>
           </div>
           <hr/>
-
           <div className={classes.Disclaimer}>
             {disclaimer}
           </div>
-
           <div>
             {travelers}
           </div>
-          
-
           <div className={classes.Banner}>
             <h1>Step 2: Contact Information</h1>
           </div>
-
-          <div className={classes.Skinny}> 
-            <Field label="Your Country:" type="text" placeholder="USA"/>
-            <Field label="Street Address:" type="text" placeholder="123 N. Main St"/>
-            <Field label="City:" type="text" placeholder="Columbus"/>
-            <Field label="State:" type="text" placeholder="Ohio"/>
-            <Field label="Zip Code:" type="text" placeholder="12345"/>
-            <Field label="Email:" type="email" placeholder="john@doe.com"/>
-            <Field label="Home Phone:" type="text" placeholder="###-###-####"/>
-            <Field label="Cell Phone:" type="text" placeholder="###-###-####"/>
+          <div className={classes.Skinny}>
+            <div className={classes.Disclaimer}>
+              This Contact Information Should Be For The Primary Passenger.
+            </div> 
+            <Field label="Your Country:" type="text" placeholder="USA" name="contactCountry" changed={this.handleChange}/>
+            <Field label="Street Address:" type="text" placeholder="123 N. Main St" name="contactStreet" changed={this.handleChange}/>
+            <Field label="City:" type="text" placeholder="Columbus" name="contactCity" changed={this.handleChange}/>
+            <Field label="State:" type="text" placeholder="Ohio" name="contactState" changed={this.handleChange}/>
+            <Field label="Zip Code:" type="text" placeholder="12345" name="contactZip" changed={this.handleChange}/>
+            <Field label="Email:" type="email" placeholder="john@doe.com" name="contactEmail" changed={this.handleChange}/>
+            <Field label="Email2:" type="email" placeholder="john@doe.com" name="contactEmail2" changed={this.handleChange}/>
+            <Field label="Phone:" type="text" placeholder="###-###-####" name="contactPhone"  changed={this.handleChange}/>
+            <Field label="Phone2:" type="text" placeholder="###-###-####" name="contactPhone2" changed={this.handleChange}/>
           </div>
-          
-
           <div className={classes.Banner}>
             <h1>Step 3: Trip Information</h1>
           </div>
-          
-
           <div className={classes.Skinny}>
-            <SelectField label="Lodging or Cruise?" options={Constants.LODGING_CRUISE} changed={this.onLodgingChanged}/>
+            <SelectField label="Lodging or Cruise?" options={Constants.LODGING_CRUISE} name="lodging" changed={this.handleChange}/>
             {lodgingInfo}
             <Field label="Departure Date:" type="date" name="departureDate" changed={this.handleChange}/>
             <Field label="Return Date:" type="date" name="returnDate" changed={this.handleChange}/>
@@ -231,26 +279,22 @@ class ReservationForm extends Component {
             <div className={classes.Disclaimer}>
             <p>We Cannot Add Cancel For Any Reason Insurance After Deposit, However We Can Add Other Traditional Insurance At A Later Date.</p>
             </div>
-            <Field label="Your Anniversary:" type="text"/>
+            {/* <Field label="Your Anniversary:" type="text"/> */}
           </div>
-
           <div className={classes.Banner}>
             <h1>Step 4: Payment Information (optional)</h1>
           </div>
-
           <div className={classes.Skinny}>
-            <SelectField label="Payment Type:" options={Constants.PAYMENT_TYPES} changed={this.onPaymentTypeChanged}/>
+            <SelectField label="Payment Type:" options={Constants.PAYMENT_TYPES} name="paymentType" changed={this.handleChange}/>
             {paymentInfo}
           </div>
-          
           <div className={classes.Banner}>
             <h1>Step 5: Additional Information</h1>
           </div> 
-
           <div className={classes.Skinny}>
             <FieldArea label="Special Requests:" cols="30" rows="10" name="specialRequest" changed={this.handleChange}/>
             <FieldArea label="Other Questions / Comments:" cols="30" rows="10" name="otherQuestion" changed={this.handleChange}/>
-            <Field label="Electronic Signature:" type="text"/>
+            <Field label="Electronic Signature:" type="text" name="electronicSignature" changed={this.handleChange}/>
           </div>
           <div style={{margin: '10px'}}>
             <p>{Constants.TERMS_ONE}</p>
@@ -261,7 +305,6 @@ class ReservationForm extends Component {
           <div>
             <button onClick={this.onSubmit}>Submit</button>
           </div>
-
         </form>
       </div>
     );

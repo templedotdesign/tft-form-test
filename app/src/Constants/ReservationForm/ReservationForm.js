@@ -1,7 +1,7 @@
 export const TRAVEL_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'domestic', name: 'Domestic' },
-  { value: 'international', name: 'International' }
+  { value: 'Domestic', name: 'Domestic' },
+  { value: 'International', name: 'International' }
 ];
 
 export const TRAVELER_COUNT = [
@@ -18,96 +18,109 @@ export const TRAVELER_COUNT = [
   { value: 10, name: '10' }
 ];
 
+export const SUFFIXES = [
+  { value: null, name: 'Select' },
+  { value: 'SR', name: 'SR.' },
+  { value: 'JR', name: 'JR.' },
+  { value: 'I', name: 'I' },
+  { value: 'II', name: 'II' },
+  { value: 'III', name: 'III' },
+  { value: 'IV', name: 'IV' },
+];
+
 export const GENDER_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'male', name: 'Male' },
-  { value: 'female', name: 'Female' }
+  { value: 'M', name: 'Male' },
+  { value: 'F', name: 'Female' }
 ];
 
 export const BEDDING_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'king', name: 'King Bed(s)' },
-  { value: 'queen', name: 'Queen Bed(s)' },
-  { value: 'double', name: 'Double Bed(s)' }
+  { value: 'King', name: 'King Bed(s)' },
+  { value: 'Queen', name: 'Queen Bed(s)' },
+  { value: 'Double', name: 'Double Bed(s)' }
 ];
 
 export const VACTION_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'adult vacation', name: 'Adult Vacation' },
-  { value: 'agency group', name: 'Agency Group' },
-  { value: 'amish trip', name: 'Amish Trip' },
-  { value: 'anniversary', name: 'Anniversary' },
-  { value: 'bachelor pary', name: 'Bachelor Party' },
-  { value: 'bachelorette party', name: 'Bachelorette Party' },
-  { value: 'bus transportation', name: 'Bus Transportation' },
-  { value: 'business travel', name: 'Business Travel' },
-  { value: 'church group', name: 'Church Group' },
-  { value: 'corporate group', name: 'Corporate Group' },
-  { value: 'corporate incentive', name: 'Corporate Incentive' },
-  { value: 'destination wedding', name: 'Destination Wedding' },
-  { value: 'destination wedding guest', name: 'Destination Wedding Guest' },
-  { value: 'family reunion', name: 'Family Reunion' },
-  { value: 'family vacation', name: 'Family Vacation' },
-  { value: 'friends and family trip', name: 'Friends And Family Trip' },
-  { value: 'gift certificate', name: 'Gift Certificate' },
-  { value: 'honeymoon', name: 'Honeymoon' },
-  { value: 'insurance quoted', name: 'Insurance Quoted' },
-  { value: 'romantic getaway', name: 'Romantic Getaway' },
-  { value: 'school trip', name: 'School Trip' },
-  { value: 'vow renewal', name: 'Vow Renewal' },
+  { value: 'Adult Vacation', name: 'Adult Vacation' },
+  { value: 'Agency Group', name: 'Agency Group' },
+  { value: 'Amish Trip', name: 'Amish Trip' },
+  { value: 'Anniversary', name: 'Anniversary' },
+  { value: 'Bachelor Pary', name: 'Bachelor Party' },
+  { value: 'Bachelorette Party', name: 'Bachelorette Party' },
+  { value: 'Bus Transportation', name: 'Bus Transportation' },
+  { value: 'Business Travel', name: 'Business Travel' },
+  { value: 'Church Group', name: 'Church Group' },
+  { value: 'Corporate Group', name: 'Corporate Group' },
+  { value: 'Corporate Incentive', name: 'Corporate Incentive' },
+  { value: 'Destination Wedding', name: 'Destination Wedding' },
+  { value: 'Destination Wedding Guest', name: 'Destination Wedding Guest' },
+  { value: 'Family Reunion', name: 'Family Reunion' },
+  { value: 'Family Vacation', name: 'Family Vacation' },
+  { value: 'Friends And Family Trip', name: 'Friends And Family Trip' },
+  { value: 'Gift Certificate', name: 'Gift Certificate' },
+  { value: 'Honeymoon', name: 'Honeymoon' },
+  { value: 'Insurance Quoted', name: 'Insurance Quoted' },
+  { value: 'Romantic Getaway', name: 'Romantic Getaway' },
+  { value: 'School Trip', name: 'School Trip' },
+  { value: 'Vow Renewal', name: 'Vow Renewal' },
 ];
 
 export const YES_NO = [
   { value: null, name: 'Select' },
-  { value: 'yes', name: 'Yes' },
-  { value: 'no', name: 'No' }
+  { value: 'Yes', name: 'Yes' },
+  { value: 'No', name: 'No' }
 ];
 
 export const YES_NO_AIRFARE = [
   { value: null, name: 'Select' },
-  { value: 'yes', name: 'Yes' },
-  { value: 'no', name: 'No' },
-  { value: 'flights already purchased', name: 'Flights Already Purchased' }
+  { value: 'Yes', name: 'Yes' },
+  { value: 'No', name: 'No' },
+  { value: 'Flights Already Purchased', name: 'Flights Already Purchased' }
 ];
 
 export const PAYMENT_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'american express', name: 'American Express' },
-  { value: 'discover', name: 'Discover' },
-  { value: 'mastercard', name: 'Mastercard' },
-  { value: 'visa', name: 'Visa' }
+  { value: 'American Express', name: 'American Express' },
+  { value: 'Discover', name: 'Discover' },
+  { value: 'Mastercard', name: 'Mastercard' },
+  { value: 'Visa', name: 'Visa' }
 ];
 
 export const PAYMENT_AMOUNTS = [
   { value: null, name: 'Select' },
-  { value: 'full', name: 'Full' },
-  { value: 'deposit', name: 'Deposit Only' },
-  { value: 'other', name: 'Other' }
+  { value: 'Full', name: 'Full' },
+  { value: 'Deposit', name: 'Deposit Only' },
+  { value: 'Other', name: 'Other' }
 ];
 
 export const LODGING_CRUISE = [
   { value: null, name: 'Select' },
-  { value: 'cruise', name: 'Cruise' },
-  { value: 'lodging', name: 'Lodging' }
+  { value: 'Cruise', name: 'Cruise' },
+  { value: 'Lodging', name: 'Lodging' }
 ];
 
 export const ROOM_TYPES = [
-  { value: 'standard', name: 'Standard' },
-  { value: 'resortview', name: 'Resort View' },
-  { value: 'oceanview', name: 'Ocean View' },
-  { value: 'oceanfront', name: 'Oceanfront' },
-  { value: 'swimup', name: 'Swim Up' },
-  { value: 'club', name: 'Club / Concierge' },
-  { value: 'butler', name: 'Butler' },
+  { value: null, name: 'Select' },
+  { value: 'Standard', name: 'Standard' },
+  { value: 'Resortview', name: 'Resort View' },
+  { value: 'Oceanview', name: 'Ocean View' },
+  { value: 'Oceanfront', name: 'Oceanfront' },
+  { value: 'Swimup', name: 'Swim Up' },
+  { value: 'Club', name: 'Club / Concierge' },
+  { value: 'Butler', name: 'Butler' },
 ];
 
 export const CABIN_TYPES = [
   { value: null, name: 'Select' },
-  { value: 'inside', name: 'Inside' },
-  { value: 'oceanview', name: 'Ocean View' },
-  { value: 'balcony', name: 'Balcony' },
-  { value: 'suite', name: 'Suite' }
+  { value: 'Inside', name: 'Inside' },
+  { value: 'Oceanview', name: 'Ocean View' },
+  { value: 'Balcony', name: 'Balcony' },
+  { value: 'Suite', name: 'Suite' }
 ];
+
+export const API_KEY = '...';
 
 export const TERMS_ONE = `By submitting, you certify that you are the cardholder and are authorizing the travel agency or its chosen 
 Tour Operator/Supplier/Cruise Line to charge the listed amount to the credit card. You certify that you have verified that all 
