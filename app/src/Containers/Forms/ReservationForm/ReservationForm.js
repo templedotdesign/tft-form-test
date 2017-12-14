@@ -19,6 +19,7 @@ class ReservationForm extends Component {
     let agentsArray = [{value: 'null', name: 'Select'}];
     const getAgentsURL = `https://www.vacationcrm.com/travelmvc/api/Service/GetAgents?ApiKey=${Constants.API_KEY}`;
     const getRequestURL = `https://www.vacationcrm.com/travelmvc/api/Service/GetRequest?ApiKey=${Constants.API_KEY}`;
+    const postRequestURL = `https://vacationcrm.com/travelmvc/api/Service/PostRequest?ApiKey=${Constants.API_KEY}`;
     axios.get(getAgentsURL)
     .then(res => {
       res.data.map(agent => {
@@ -47,7 +48,7 @@ class ReservationForm extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     const passengersArray = this.createPassengers();
-    const paymentsArray = [];
+    const paymentsArray = this.createPayments();
     const formattedDepartureDate = this.formatDate(this.state.departureDate);
     const formattedReturnDate = this.formatDate(this.state.returnDate);
     const reservation = {
@@ -87,6 +88,9 @@ class ReservationForm extends Component {
       udf_reg5: null
     };
     console.log(reservation);
+    // axios.post(postRequestURL, reservation)
+    // .then(res => {console.log(res)})
+    // .catch(err => {console.log(err)});
   };
 
   createPassengers = () => {
@@ -147,6 +151,45 @@ class ReservationForm extends Component {
     return passengers;
   };
 
+  createPayments = () => {
+    let payments = [];
+    let payment = {};
+
+    if(!this.state.paymentType) {
+      payments.push(payment);
+      return payments;
+    }
+
+    payment = {...payment, CCName: this.state.ccName};
+    payment = {...payment, CCV: this.state.ccv};
+    payment = {...payment, CreditCardNum: this.state.ccNumber};
+    payment = {...payment, ExpirationMonth: this.state.ccMonth};
+    payment = {...payment, ExpirationYear: this.state.ccYear};
+    payment = {...payment, PaymentDescription: this.state.ccDescription || null};
+    payment = {...payment, PaymentType: this.state.paymentType};
+    payment = {...payment, pdf_id: null};
+    payment = {...payment, udf_pmt1: null};
+    payment = {...payment, udf_pmt2: null};
+    payment = {...payment, udf_pmt3: null};
+    if(this.state.useSameAddress  === 'Yes') {
+      payment = {...payment, CCAddress: this.state.contactStreet};
+      payment = {...payment, CCAddress2: null};
+      payment = {...payment, CCCity: this.state.contactCity};
+      payment = {...payment, CCCountry: this.state.contactCountry};
+      payment = {...payment, CCState: this.state.contactState};
+      payment = {...payment, CCZip: this.state.contactZip};
+    } else {
+      payment = {...payment, CCAddress: this.state.ccAddress1};
+      payment = {...payment, CCAddress2: this.state.ccAddress2 || null};
+      payment = {...payment, CCCity: this.state.ccCity};
+      payment = {...payment, CCCountry: this.state.ccCountry};
+      payment = {...payment, CCState: this.state.ccState};
+      payment = {...payment, CCZip: this.state.ccZip};
+    }
+    payments.push(payment);
+    return payments;
+  };
+
   formatDate = (dateString) => {
     const dateArray = dateString.split('-');
     const formattedArray = [];
@@ -173,12 +216,12 @@ class ReservationForm extends Component {
     if(this.state.useSameAddress === 'No') {
       billingInfo = (
         <div>
-          <Field label="Billing Country:" type="text"/>
-          <Field label="Billing Address:" type="text"/>
-          <Field label="Suite / Apt #:" type="text"/>
-          <Field label="Billing City:" type="text"/>
-          <Field label="Billing State:" type="text"/>
-          <Field label="Billing Zip Code:" type="text"/>
+          <Field label="Billing Country:" type="text" name="ccCountry" changed={this.handleChange}/>
+          <Field label="Billing Address:" type="text" name="ccAddress1" changed={this.handleChange}/>
+          <Field label="Suite / Apt #:" type="text" name="ccAddress2" changed={this.handleChange}/>
+          <Field label="Billing City:" type="text" name="ccCity" changed={this.handleChange}/>
+          <Field label="Billing State:" type="text" name="ccState" changed={this.handleChange}/>
+          <Field label="Billing Zip Code:" type="text" name="ccZip" changed={this.handleChange}/>
         </div>
       );
     }
@@ -186,7 +229,7 @@ class ReservationForm extends Component {
     let payOtherAmount = null;
     if(this.state.paymentAmount === 'Other') {
       payOtherAmount = (
-        <Field label="Amount:" type="text"/>
+        <Field label="Amount:" type="text" name="ccAmount" changed={this.handleChange}/>
       );
     }
 
@@ -194,14 +237,14 @@ class ReservationForm extends Component {
     if(this.state.paymentType) {
       paymentInfo = (
         <div>
-          <Field label="Credit Card Number:" type="text"/>
-          <Field label="Expiration Month:" type="text" placeholder="MM"/>
-          <Field label="Expiration Year:" type="text" placeholder="YYYY"/>
-          <Field label="CCV #:" type="text"/>
-          <Field label="Name On The Card:" type="text"/>
+          <Field label="Credit Card Number:" type="text" name="ccNumber" changed={this.handleChange}/>
+          <Field label="Expiration Month:" type="text" placeholder="MM" name="ccMonth" changed={this.handleChange}/>
+          <Field label="Expiration Year:" type="text" placeholder="YY" name="ccYear" changed={this.handleChange}/>
+          <Field label="CCV #:" type="text" name="ccv" changed={this.handleChange}/>
+          <Field label="Name On The Card:" type="text" name="ccName" changed={this.handleChange}/>
           <SelectField label="Billing Address Same As Contact Address?" options={Constants.YES_NO} name="useSameAddress" changed={this.handleChange}/>
           {billingInfo}
-          <Field label="Payment Description:" type="text"/>
+          <Field label="Payment Description:" type="text" name="ccDescription" changed={this.handleChange}/>
           <SelectField label="Pay In Full Or Deposit?" options={Constants.PAYMENT_AMOUNTS} name="paymentAmount" changed={this.handleChange}/>
           {payOtherAmount}
         </div>
