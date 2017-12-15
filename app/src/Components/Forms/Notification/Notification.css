@@ -1,0 +1,10 @@
+.Notification {
+  width: 80%;
+  border: 1px solid black;
+  color: white;
+  margin: 20px auto;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.3rem;
+  border-radius: 5px;
+}

@@ -30,18 +30,18 @@ const travelerInfo = (props) => {
   if(props.traveltype === 'Domestic') {
     identification = (
       <div>
-        <Field label="First Name:" type="text" placeholder="John" name={fname} changed={props.changed}/>
-        <Field label="Middle Name:" type="text" placeholder="Quentin" name={mname} changed={props.changed}/>
-        <Field label="Last Name:" type="text" placeholder="Doe" name={lname} changed={props.changed}/>
+        <Field required label="First Name:" type="text" placeholder="John" name={fname} changed={props.changed}/>
+        <Field required label="Middle Name:" type="text" placeholder="Quentin" name={mname} changed={props.changed}/>
+        <Field required label="Last Name:" type="text" placeholder="Doe" name={lname} changed={props.changed}/>
         <SelectField label="Suffix:" options={Constants.SUFFIXES} name={suffix} changed={props.changed}/>
       </div>
     );
   } else if(props.traveltype === 'International') {
     identification = (
       <div>
-        <Field label="First Name: " type="text" placeholder="John" name={fname} changed={props.changed}/>
-        <Field label="Middle Name: " type="text" placeholder="Quentin" name={mname} changed={props.changed}/>
-        <Field label="Last Name: " type="text" placeholder="Doe" name={lname} changed={props.changed}/>
+        <Field required label="First Name: " type="text" placeholder="John" name={fname} changed={props.changed}/>
+        <Field required label="Middle Name: " type="text" placeholder="Quentin" name={mname} changed={props.changed}/>
+        <Field required label="Last Name: " type="text" placeholder="Doe" name={lname} changed={props.changed}/>
         <SelectField label="Suffix:" options={Constants.SUFFIXES} name={suffix} changed={props.changed}/>
         <Field label="Passport Number: " type="text" placeholder="#########" name={passNum} changed={props.changed}/>
         <Field label="Passport Issuing Authority: " type="text" placeholder="USA" name={passIssuer} changed={props.changed}/>
@@ -53,7 +53,7 @@ const travelerInfo = (props) => {
     <div className={classes.TravelerInfo}>
       {title}
       {identification}
-      <Field label="Date Of Birth: " type="date" name={dob} changed={props.changed}/>
+      <Field required label="Date Of Birth: " type="date" name={dob} changed={props.changed}/>
       <SelectField label="Gender: " options={Constants.GENDER_TYPES} name={gender} changed={props.changed}/>
     </div>
   );
